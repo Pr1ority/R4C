@@ -1,3 +1,9 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Robot
+
+
+@admin.register(Robot)
+class RobotAdmin(admin.ModelAdmin):
+    list_display = ('serial', 'model', 'version', 'created')
+    search_fields = ('serial', 'model', 'version')
