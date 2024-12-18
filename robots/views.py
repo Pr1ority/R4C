@@ -1,9 +1,10 @@
 import json
 
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from .models import Robot
+from .utils import generate_excel_file, get_weekly_summary
 
 
 @csrf_exempt
@@ -63,3 +64,18 @@ def add_robot(request):
         return JsonResponse(
             {'ошибка': f'Не удалось добавить робота: {str(e)}'}, status=500
         )
+
+
+def download_weekly_summary(request):
+    summary = get_weekly_summary()
+
+    excel_file = generate_excel_file(summary)
+
+    response = HttpResponse(
+        excel_file.getvalue(),
+        content_type='application/'
+                     'vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+    response['Content-Disposition'] = ('attachment;'
+                                       'filename="weekly_robot_summary.xlsx"')
+    return response
