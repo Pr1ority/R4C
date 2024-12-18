@@ -16,7 +16,7 @@ def add_robot(request):
     """
     if request.method != 'POST':
         return JsonResponse(
-            {'ошибка': 'Некорректный метод запроса. Используйте метод POST.'},
+            {'ошибка': 'Некорректный метод запроса. Используйте POST.'},
             status=405
         )
 
